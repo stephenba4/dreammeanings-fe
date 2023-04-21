@@ -27,7 +27,7 @@ const Home: NextPage = () => {
                   (m.src = i),
                   p.parentNode.insertBefore(m, p))
                 }
-                (document,"script","https://chimpstatic.com/mcjs-connected/js/users/9ad191aa4d7af66b6d1dd437d/a3a0c52b94f73af4648ed67cf.js");
+                (document,"script","https://chimpstatic.com/mcjs-connected/js/users/9ad191aa4d7af66b6d1dd437d/f3a92ce48f0773837771dbebe.js");
               `,
           }}
         />
