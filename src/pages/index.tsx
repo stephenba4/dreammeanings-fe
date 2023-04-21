@@ -14,6 +14,23 @@ const Home: NextPage = () => {
         <title>SoulGuru</title>
         {/* TO DO: edit this meta tag */}
         <meta name="description" content="SoulGuru: Unlock Your Inner Wisdom" />
+        {/* Your Mailchimp form HTML goes here */}
+        <script
+          id="mcjs"
+          dangerouslySetInnerHTML={{
+            __html: `
+                !function(c,h,i,m,p)
+                {
+                  ((m = c.createElement(h)),
+                  (p = c.getElementsByTagName(h)[0]),
+                  (m.async = 1),
+                  (m.src = i),
+                  p.parentNode.insertBefore(m, p))
+                }
+                (document,"script","https://chimpstatic.com/mcjs-connected/js/users/9ad191aa4d7af66b6d1dd437d/a3a0c52b94f73af4648ed67cf.js");
+              `,
+          }}
+        />
       </Head>
 
       <main className="min-h-screen bg-gray-200 py-10">
