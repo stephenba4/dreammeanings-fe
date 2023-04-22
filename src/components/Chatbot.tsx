@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import YouTubeCTA from '../components/YouTubeCTA';
+import SuggestedQuestion from '../components/SuggestedQuestion';
 
 interface Message {
   id: number;
@@ -22,6 +23,12 @@ const Chatbot: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [messageId, setMessageId] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  // TO DO: Define an array of suggested questions
+  const suggestedQuestions = [
+    'What is the meaning of life?',
+    'What is your perspective on spirituality?',
+    'What is your opinion on meditation?',
+  ];
 
   const handleMessageSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,11 +62,18 @@ const Chatbot: React.FC = () => {
 
       setMessageId(messageId + 2);
       setMessages((prevMessages) => [...prevMessages, newBotMessage]);
+      scrollToBottom();
     } catch (error) {
       console.error('Error communicating with the API:', error);
     }
 
     setLoading(false);
+  };
+
+  const handleSuggestedQuestionClick = (question: string) => {
+    setInputValue(question);
+    const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
+    handleMessageSubmit(fakeEvent);
   };
 
   const scrollToBottom = () => {
@@ -94,20 +108,23 @@ const Chatbot: React.FC = () => {
               </span>
             </div>
           ))}
-          <div ref={messagesEndRef}></div>
+          <div ref={messagesEndRef} className="pt-4"></div>
         </div>
-        <form onSubmit={handleMessageSubmit} className="flex">
+        <form
+          id={'chatbot-form'}
+          onSubmit={handleMessageSubmit}
+          className="flex flex-row justify-center items-center"
+        >
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="flex-grow bg-white border border-gray-300 text-gray-500 rounded-lg p-2 mr-2"
-            // TO DO: edit input placeholder message
+            className="flex-grow bg-white border border-gray-300 text-gray-500 rounded-lg p-2 mr-2 mb-0"
             placeholder="Ask SoulGuru a question..."
           />
           <button
             type="submit"
-            className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600"
+            className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 mb-0"
           >
             Send
           </button>
@@ -118,6 +135,21 @@ const Chatbot: React.FC = () => {
             />
           )}
         </form>
+
+        <h2 className="text-gray-800 font-medium text-lg mt-4 mb-2">
+          Suggested Questions:
+        </h2>
+
+        <div className="flex flex-wrap justify-center mt-4">
+          {suggestedQuestions.map((question) => (
+            <div className="w-full" key={question}>
+              <SuggestedQuestion
+                question={question}
+                onClick={handleSuggestedQuestionClick}
+              />
+            </div>
+          ))}
+        </div>
         {/* TO DO: add or remove this YouTube call to action for Stephen's channel */}
         <YouTubeCTA />
       </div>

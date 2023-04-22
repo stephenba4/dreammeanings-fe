@@ -105,3 +105,23 @@ a {
     color-scheme: dark;
   }
 }
+
+/* Scrollbar Width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Scrollbar Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Scrollbar Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Scrollbar Handle on Hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
