@@ -25,7 +25,10 @@ const Chatbot: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (messagesEndRef.current && !loading) {
+    if (
+      (messagesEndRef.current && loading) ||
+      (messagesEndRef.current && !loading)
+    ) {
       messagesEndRef.current.scrollIntoView({
         behavior: 'smooth',
         block: 'end',
@@ -107,13 +110,13 @@ const Chatbot: React.FC = () => {
               </span>
             </div>
           ))}
-          <div ref={messagesEndRef} />
           {loading && messages.length > 0 && (
             <AiOutlineLoading3Quarters
               className="animate-spin ml-2 text-teal-500"
               size={24}
             />
           )}
+          <div ref={messagesEndRef} />
         </div>
         <form
           onSubmit={handleMessageSubmit}
