@@ -1,21 +1,29 @@
 import React from 'react';
 
-type SuggestedQuestionProps = {
+interface SuggestedQuestionProps {
   question: string;
-  onClick: (question: string) => void;
-};
+  onClick: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    question: string
+  ) => void;
+  disabled: boolean;
+}
 
 const SuggestedQuestion: React.FC<SuggestedQuestionProps> = ({
   question,
   onClick,
+  disabled,
 }) => {
   return (
-    <div
-      className="p-2 my-2 cursor-pointer border border-gray-300 rounded-md shadow-md hover:shadow-lg"
-      onClick={() => onClick(question)}
+    <button
+      className={`${
+        disabled ? 'bg-gray-400 cursor' : 'bg-gray-300 hover:bg-gray-400'
+      } text-gray-800 font-medium py-2 px-4 rounded-lg mr-2 mb-4 w-full`}
+      onClick={(event) => onClick(event, question)}
+      disabled={disabled}
     >
-      <p className="text-lg font-medium text-gray-800">{question}</p>
-    </div>
+      {question}
+    </button>
   );
 };
 

@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <div>
+    <div className="bg-gray-200 min-h-screen">
       <Head>
         <title>SoulGuru</title>
         {/* TO DO: edit this meta tag */}
@@ -27,18 +27,14 @@ const Home: NextPage = () => {
         src="https://chimpstatic.com/mcjs-connected/js/users/9ad191aa4d7af66b6d1dd437d/f3a92ce48f0773837771dbebe.js"
       />
 
-      <main className="min-h-screen bg-gray-200 py-10">
-        <div className="container mx-auto px-4">
-          {/* TO DO: edit the title and subtitle */}
-          <h1 className="text-4xl font-bold mb-2 text-center text-teal-500">
-            SoulGuru
-          </h1>
-          <h2 className="text-lg font-medium mb-10 text-center text-gray-500 max-w-lg mx-auto">
-            Explore Spirituality and Find Answers to Life{"'"}s Biggest
-            Questions
-          </h2>
-          <Chatbot />
-        </div>
+      <main className="container mx-auto px-4 py-10">
+        <h1 className="text-4xl font-bold mb-2 text-center text-teal-500">
+          SoulGuru
+        </h1>
+        <h2 className="text-lg font-medium mb-4 text-center text-gray-500 max-w-lg mx-auto">
+          Explore Spirituality and Find Answers to Life{"'"}s Biggest Questions
+        </h2>
+        <Chatbot />
       </main>
     </div>
   );

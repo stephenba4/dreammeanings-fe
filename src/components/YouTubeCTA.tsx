@@ -1,7 +1,7 @@
+import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
-import { ReactElement } from 'react';
 
-type YoutubeCTAProps = {};
+interface YoutubeCTAProps {}
 
 const YoutubeCTA: React.FC<YoutubeCTAProps> = (): ReactElement => {
   const router = useRouter();
@@ -16,7 +16,7 @@ const YoutubeCTA: React.FC<YoutubeCTAProps> = (): ReactElement => {
 
   return (
     <div className="text-center">
-      <p className="text-lg mb-4 mt-4 text-gray-500">
+      <p className="text-gray-800 font-medium text-lg mb-4">
         Don{"'"}t forget to watch our videos on YouTube!
       </p>
       <button

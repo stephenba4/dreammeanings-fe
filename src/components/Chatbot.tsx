@@ -14,8 +14,7 @@ const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 0,
-      // TO DO: edit the initial message from the bot
-      text: "Hello there! I'm Soulguru, your personal spiritual guide. I'm here to explore your beliefs and help you become more aware of them. To begin our journey together, just tell me about your current spiritual views or feel free to ask any questions you have. Let's dive in!",
+      text: "Greetings! I'm Soulguru, your spiritual friend. Let's take a journey to learn about spirituality. If you have any questions, feel free to ask me and we'll begin!",
       sender: 'bot',
     },
   ]);
@@ -23,20 +22,33 @@ const Chatbot: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [messageId, setMessageId] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  // TO DO: Define an array of suggested questions
+
+  useEffect(() => {
+    // Scroll to the last message when the component updates
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
   const suggestedQuestions = [
     'What is the meaning of life?',
     'What is your perspective on spirituality?',
     'What is your opinion on meditation?',
   ];
 
-  const handleMessageSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputValue) return;
+  const handleMessageSubmit = async (
+    event?: React.FormEvent,
+    question?: string
+  ) => {
+    if (event) {
+      event.preventDefault(); // prevent default form submission behavior
+    }
+    const inputValueToUse = question ? question : inputValue;
+    if (!inputValueToUse) return;
 
     const newUserMessage: Message = {
       id: messageId,
-      text: inputValue,
+      text: inputValueToUse,
       sender: 'user',
     };
 
@@ -49,7 +61,7 @@ const Chatbot: React.FC = () => {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_ENDPOINT}/ask`,
         {
-          question: inputValue,
+          question: inputValueToUse,
         }
       );
       const answer = response.data.answer;
@@ -62,7 +74,6 @@ const Chatbot: React.FC = () => {
 
       setMessageId(messageId + 2);
       setMessages((prevMessages) => [...prevMessages, newBotMessage]);
-      scrollToBottom();
     } catch (error) {
       console.error('Error communicating with the API:', error);
     }
@@ -70,26 +81,13 @@ const Chatbot: React.FC = () => {
     setLoading(false);
   };
 
-  const handleSuggestedQuestionClick = (question: string) => {
-    setInputValue(question);
-    const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
-    handleMessageSubmit(fakeEvent);
-  };
-
-  const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
   return (
     <div className="w-full max-w-lg mx-auto">
       <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-        <div className="h-64 overflow-y-auto mb-4">
+        <div
+          id="chatbot-messages"
+          className="h-64 overflow-y-auto mb-4 relative"
+        >
           {messages.map((message, index) => (
             <div
               key={`${index}-${message.id}`}
@@ -108,44 +106,55 @@ const Chatbot: React.FC = () => {
               </span>
             </div>
           ))}
-          <div ref={messagesEndRef} className="pt-4"></div>
-        </div>
-        <form
-          id={'chatbot-form'}
-          onSubmit={handleMessageSubmit}
-          className="flex flex-row justify-center items-center"
-        >
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            className="flex-grow bg-white border border-gray-300 text-gray-500 rounded-lg p-2 mr-2 mb-0"
-            placeholder="Ask SoulGuru a question..."
-          />
-          <button
-            type="submit"
-            className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 mb-0"
-          >
-            Send
-          </button>
-          {loading && (
+          {/* Add a reference to the last message */}
+          <div ref={messagesEndRef} />
+          {loading && messages.length > 0 && (
             <AiOutlineLoading3Quarters
               className="animate-spin ml-2 text-teal-500"
               size={24}
             />
           )}
+        </div>
+        <form
+          onSubmit={handleMessageSubmit}
+          className="flex flex-row justify-center items-center mb-4"
+        >
+          <input
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            className="flex-grow bg-white border border-gray-300 text-gray-800 rounded-lg p-2 mr-2 mb-0"
+            placeholder="Ask SoulGuru a question..."
+          />
+          <button
+            type="submit"
+            className={`${
+              loading ? 'bg-teal-600 cursor' : 'bg-teal-500 hover:bg-teal-600'
+            } text-white px-4 py-2 rounded-lg mb-0`}
+            onClick={loading ? undefined : handleMessageSubmit}
+            disabled={loading}
+          >
+            Send
+          </button>
         </form>
 
-        <h2 className="text-gray-800 font-medium text-lg mt-4 mb-2">
+        <h2 className="text-gray-800 font-medium text-lg mt-4 mb-4">
           Suggested Questions:
         </h2>
-
-        <div className="flex flex-wrap justify-center mt-4">
+        <div className="flex flex-wrap justify-center">
           {suggestedQuestions.map((question) => (
-            <div className="w-full" key={question}>
+            <div className="w-full mb-2" key={question}>
               <SuggestedQuestion
                 question={question}
-                onClick={handleSuggestedQuestionClick}
+                onClick={(
+                  event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+                  question: string
+                ) => {
+                  if (!loading) {
+                    handleMessageSubmit(event, question);
+                  }
+                }}
+                disabled={loading}
               />
             </div>
           ))}
