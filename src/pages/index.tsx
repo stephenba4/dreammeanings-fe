@@ -13,14 +13,14 @@ const Home: NextPage = () => {
     <div className="bg-gray-200 min-h-screen">
       <Head>
         <title>SoulGuru</title>
-        {/* TO DO: edit this meta tag */}
+        {/* TO DO: Edit this meta tag */}
         <meta
           name="description"
           content="SoulGuru: Explore Spirituality and Find Answers to Life's Biggest Questions"
         />
       </Head>
 
-      {/* Your Mailchimp form HTML goes here */}
+      {/* Mailchimp popup form HTML */}
       <Script
         id="mcjs"
         strategy="lazyOnload"
@@ -28,9 +28,11 @@ const Home: NextPage = () => {
       />
 
       <main className="container mx-auto px-4 py-10">
+        {/* TO DO: Edit the app title */}
         <h1 className="text-4xl font-bold mb-2 text-center text-teal-500">
           SoulGuru
         </h1>
+        {/* TO DO: Edit the app subtitle */}
         <h2 className="text-lg font-medium mb-4 text-center text-gray-500 max-w-lg mx-auto">
           Explore Spirituality and Find Answers to Life{"'"}s Biggest Questions
         </h2>

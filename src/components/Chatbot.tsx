@@ -14,6 +14,7 @@ const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 0,
+      // TO DO: Edit the first message the chatbot shows
       text: "Greetings! I'm Soulguru, your spiritual friend. Let's take a journey to learn about spirituality. If you have any questions, feel free to ask me and we'll begin!",
       sender: 'bot',
     },
@@ -24,12 +25,15 @@ const Chatbot: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Scroll to the last message when the component updates
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current && !loading) {
+      messagesEndRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+      });
     }
-  }, [messages]);
+  }, [messages, loading]);
 
+  // TO DO: Edit the suggested questions
   const suggestedQuestions = [
     'What is the meaning of life?',
     'What is your perspective on spirituality?',
@@ -41,7 +45,7 @@ const Chatbot: React.FC = () => {
     question?: string
   ) => {
     if (event) {
-      event.preventDefault(); // prevent default form submission behavior
+      event.preventDefault();
     }
     const inputValueToUse = question ? question : inputValue;
     if (!inputValueToUse) return;
@@ -84,10 +88,7 @@ const Chatbot: React.FC = () => {
   return (
     <div className="w-full max-w-lg mx-auto">
       <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-        <div
-          id="chatbot-messages"
-          className="h-64 overflow-y-auto mb-4 relative"
-        >
+        <div className="h-64 overflow-y-auto mb-4 relative">
           {messages.map((message, index) => (
             <div
               key={`${index}-${message.id}`}
@@ -106,7 +107,6 @@ const Chatbot: React.FC = () => {
               </span>
             </div>
           ))}
-          {/* Add a reference to the last message */}
           <div ref={messagesEndRef} />
           {loading && messages.length > 0 && (
             <AiOutlineLoading3Quarters
@@ -124,6 +124,7 @@ const Chatbot: React.FC = () => {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             className="flex-grow bg-white border border-gray-300 text-gray-800 rounded-lg p-2 mr-2 mb-0"
+            // TO DO: Edit placeholder text in input area
             placeholder="Ask SoulGuru a question..."
           />
           <button
@@ -159,7 +160,7 @@ const Chatbot: React.FC = () => {
             </div>
           ))}
         </div>
-        {/* TO DO: add or remove this YouTube call to action for Stephen's channel */}
+        {/* TO DO: Add or remove this YouTube call to action for Stephen and David's channel */}
         <YouTubeCTA />
       </div>
     </div>
