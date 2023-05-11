@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import YouTubeCTA from '../components/YouTubeCTA';
-import SuggestedQuestion from '../components/SuggestedQuestion';
 
 interface Message {
   id: number;
@@ -15,7 +12,7 @@ const Chatbot: React.FC = () => {
     {
       id: 0,
       // TO DO: Edit the first message the chatbot shows
-      text: "Greetings! I'm Soulguru, your spiritual friend. Let's take a journey to learn about spirituality. If you have any questions, feel free to ask me and we'll begin!",
+      text: 'Hi! I am here to interpret your dream for you, please offer as much detail as possible.',
       sender: 'bot',
     },
   ]);
@@ -35,13 +32,6 @@ const Chatbot: React.FC = () => {
       });
     }
   }, [messages, loading]);
-
-  // TO DO: Edit the suggested questions
-  const suggestedQuestions = [
-    'What is the meaning of life?',
-    'What is your perspective on spirituality?',
-    'What is your opinion on meditation?',
-  ];
 
   const handleMessageSubmit = async (
     event?: React.FormEvent,
@@ -89,9 +79,13 @@ const Chatbot: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto">
-      <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-        <div className="h-64 overflow-y-auto mb-4 relative">
+    <div className="w-full min-h-screen flex flex-col">
+      <div className="bg-gray-100 flex flex-col flex-grow rounded-lg min-h-screen max-h-screen">
+        {/* TO DO: Edit the app title */}
+        <h1 className="text-4xl font-bold text-center text-teal-500 bg-gray-200">
+          DreamMeanings
+        </h1>
+        <div className="flex-grow overflow-y-auto relative p-2">
           {messages.map((message, index) => (
             <div
               key={`${index}-${message.id}`}
@@ -104,23 +98,23 @@ const Chatbot: React.FC = () => {
                   message.sender === 'user'
                     ? 'bg-teal-500 text-white'
                     : 'bg-gray-300 text-black'
-                } inline-block px-3 py-1 rounded-lg text-sm`}
+                } inline-block px-3 py-1 rounded-lg text-sm break-words`}
               >
                 {message.text}
               </span>
             </div>
           ))}
-          {loading && messages.length > 0 && (
-            <AiOutlineLoading3Quarters
-              className="animate-spin ml-2 text-teal-500"
-              size={24}
-            />
-          )}
+
           <div ref={messagesEndRef} />
         </div>
+        {loading && messages.length > 0 && (
+          <p className=" text-black inline-block px-3 py-1 text-sm">
+            Typing...
+          </p>
+        )}
         <form
           onSubmit={handleMessageSubmit}
-          className="flex flex-row justify-center items-center mb-4"
+          className="flex flex-row justify-center items-center p-2"
         >
           <input
             type="text"
@@ -128,7 +122,7 @@ const Chatbot: React.FC = () => {
             onChange={(e) => setInputValue(e.target.value)}
             className="flex-grow bg-white border border-gray-300 text-gray-800 rounded-lg p-2 mr-2 mb-0"
             // TO DO: Edit placeholder text in input area
-            placeholder="Ask SoulGuru a question..."
+            placeholder="Ask DreamMeanings a question..."
           />
           <button
             type="submit"
@@ -141,30 +135,6 @@ const Chatbot: React.FC = () => {
             Send
           </button>
         </form>
-
-        <h2 className="text-gray-800 font-medium text-lg mt-4 mb-4">
-          Suggested Questions:
-        </h2>
-        <div className="flex flex-wrap justify-center">
-          {suggestedQuestions.map((question) => (
-            <div className="w-full mb-2" key={question}>
-              <SuggestedQuestion
-                question={question}
-                onClick={(
-                  event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-                  question: string
-                ) => {
-                  if (!loading) {
-                    handleMessageSubmit(event, question);
-                  }
-                }}
-                disabled={loading}
-              />
-            </div>
-          ))}
-        </div>
-        {/* TO DO: Add or remove this YouTube call to action for Stephen and David's channel */}
-        <YouTubeCTA />
       </div>
     </div>
   );

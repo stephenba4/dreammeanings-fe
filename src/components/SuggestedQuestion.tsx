@@ -28,3 +28,26 @@ const SuggestedQuestion: React.FC<SuggestedQuestionProps> = ({
 };
 
 export default SuggestedQuestion;
+
+// implementation
+// <h2 className="text-gray-800 font-medium text-lg mt-4 mb-4">
+//         Suggested Questions:
+//       </h2>
+//       <div className="flex flex-wrap justify-center">
+//         {suggestedQuestions.map((question) => (
+//           <div className="w-full mb-2" key={question}>
+//             <SuggestedQuestion
+//               question={question}
+//               onClick={(
+//                 event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+//                 question: string
+//               ) => {
+//                 if (!loading) {
+//                   handleMessageSubmit(event, question);
+//                 }
+//               }}
+//               disabled={loading}
+//             />
+//           </div>
+//         ))}
+//       </div>
